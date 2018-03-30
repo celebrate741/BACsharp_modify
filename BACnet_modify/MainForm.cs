@@ -169,7 +169,10 @@ namespace BACnet_modify
             Log(string.Format("({0}) {1} {2}\n", (int)obj_type, obj_type.ToString(), obj_inst));
 
             string addr = txtIP.Text;
-            bool ret = simpleRW.SendWriteProperty(addr, obj_type, obj_inst, prop_id, property, 8);
+            bool ret;
+            if (isMSTP) ret = simpleRW.SendWriteProperty(addr, obj_type, obj_inst, prop_id, property, 8);
+            else ret = simpleRW.SendWriteProperty(addr, obj_type, obj_inst, prop_id, property, 8,
+                frmMSTP.SourceLength, frmMSTP.Network, frmMSTP.MACAddr);
             if (!ret)
             {
                 Log("Write Err(1)\n");
@@ -186,8 +189,11 @@ namespace BACnet_modify
             if (frmMSTP == null) frmMSTP = new frm_MSTP();
             isMSTP = false;
             if (chk_mstp.Checked)
+            {
                 if (frmMSTP.ShowDialog(this) == DialogResult.OK)
                     isMSTP = true;
+                else chk_mstp.Checked = false;
+            }
         }
 
         private void btn_edit_broadcast_Click(object sender, EventArgs e)
@@ -231,7 +237,10 @@ namespace BACnet_modify
                 if (dialog.ShowDialog(this) == DialogResult.OK)
                 {
                     byte[] file_data;
-                    bool ret = simpleRW.SendDownloadDDC(addr, out file_data);
+                    bool ret;
+                    if (isMSTP) ret = simpleRW.SendDownloadDDC(addr, out file_data);
+                    else ret = simpleRW.SendDownloadDDC(addr, out file_data,
+                        frmMSTP.SourceLength, frmMSTP.Network, frmMSTP.MACAddr);
                     if (!ret) Log("Read Err(1)\n");
                     else
                     {
@@ -252,7 +261,10 @@ namespace BACnet_modify
                 if (dialog.ShowDialog(this) == DialogResult.OK)
                 {
                     byte[] file_data = File.ReadAllBytes(dialog.FileName);
-                    bool ret = simpleRW.SendUploadDDC(addr, file_data);
+                    bool ret;
+                    if (isMSTP) ret = simpleRW.SendUploadDDC(addr, file_data);
+                    else ret = simpleRW.SendUploadDDC(addr, file_data,
+                        frmMSTP.SourceLength, frmMSTP.Network, frmMSTP.MACAddr);
                     if (!ret) Log("Read Err(1)\n");
                     else Log("Write File Success \n");
                 }

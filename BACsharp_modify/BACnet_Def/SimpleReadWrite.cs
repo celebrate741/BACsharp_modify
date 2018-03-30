@@ -761,10 +761,8 @@ namespace BACsharp.BACnet_Def
          * 2.write file1024 = { start=0, data=....bytes }
          * 3.write program 1024 program-change = (1) load
         */
-        public bool SendUploadDDC(
-              string ipAddr,
-              byte[] file_data,
-              uint instance = 1024
+        public bool SendUploadDDC( string ipAddr, byte[] file_data,
+            UInt16 source_length = 0, UInt16 network = 0, UInt16 macAddr = 0, UInt16 instance = 1024
         )
         {
             Log("Upload==============\n");

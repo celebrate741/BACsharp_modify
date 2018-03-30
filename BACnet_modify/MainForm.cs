@@ -170,7 +170,7 @@ namespace BACnet_modify
 
             string addr = txtIP.Text;
             bool ret;
-            if (isMSTP) ret = simpleRW.SendWriteProperty(addr, obj_type, obj_inst, prop_id, property, 8);
+            if (!isMSTP) ret = simpleRW.SendWriteProperty(addr, obj_type, obj_inst, prop_id, property, 8);
             else ret = simpleRW.SendWriteProperty(addr, obj_type, obj_inst, prop_id, property, 8,
                 frmMSTP.SourceLength, frmMSTP.Network, frmMSTP.MACAddr);
             if (!ret)
@@ -238,7 +238,7 @@ namespace BACnet_modify
                 {
                     byte[] file_data;
                     bool ret;
-                    if (isMSTP) ret = simpleRW.SendDownloadDDC(addr, out file_data);
+                    if (!isMSTP) ret = simpleRW.SendDownloadDDC(addr, out file_data);
                     else ret = simpleRW.SendDownloadDDC(addr, out file_data,
                         frmMSTP.SourceLength, frmMSTP.Network, frmMSTP.MACAddr);
                     if (!ret) Log("Read Err(1)\n");
@@ -262,7 +262,7 @@ namespace BACnet_modify
                 {
                     byte[] file_data = File.ReadAllBytes(dialog.FileName);
                     bool ret;
-                    if (isMSTP) ret = simpleRW.SendUploadDDC(addr, file_data);
+                    if (!isMSTP) ret = simpleRW.SendUploadDDC(addr, file_data);
                     else ret = simpleRW.SendUploadDDC(addr, file_data,
                         frmMSTP.SourceLength, frmMSTP.Network, frmMSTP.MACAddr);
                     if (!ret) Log("Read Err(1)\n");

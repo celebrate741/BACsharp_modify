@@ -58,6 +58,7 @@
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.btn_download = new System.Windows.Forms.Button();
             this.btn_upload = new System.Windows.Forms.Button();
+            this.chk_mstp = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numObjectInst)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_low_limit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_high_limit)).BeginInit();
@@ -224,7 +225,7 @@
             this.btn_broadcast.Tag = "dest";
             this.btn_broadcast.Text = "edit";
             this.btn_broadcast.UseVisualStyleBackColor = true;
-            this.btn_broadcast.Click += new System.EventHandler(this.btn_broadcast_Click);
+            this.btn_broadcast.Click += new System.EventHandler(this.btn_edit_broadcast_Click);
             // 
             // num_low_limit
             // 
@@ -363,11 +364,23 @@
             this.btn_upload.UseVisualStyleBackColor = true;
             this.btn_upload.Click += new System.EventHandler(this.btn_upload_Click);
             // 
+            // chk_mstp
+            // 
+            this.chk_mstp.AutoSize = true;
+            this.chk_mstp.Location = new System.Drawing.Point(185, 207);
+            this.chk_mstp.Name = "chk_mstp";
+            this.chk_mstp.Size = new System.Drawing.Size(67, 19);
+            this.chk_mstp.TabIndex = 14;
+            this.chk_mstp.Text = "MSTP";
+            this.chk_mstp.UseVisualStyleBackColor = true;
+            this.chk_mstp.CheckedChanged += new System.EventHandler(this.chk_mstp_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(802, 579);
+            this.Controls.Add(this.chk_mstp);
             this.Controls.Add(this.btn_upload);
             this.Controls.Add(this.btn_download);
             this.Controls.Add(this.checkBox1);
@@ -444,6 +457,7 @@
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Button btn_download;
         private System.Windows.Forms.Button btn_upload;
+        private System.Windows.Forms.CheckBox chk_mstp;
     }
 }
 

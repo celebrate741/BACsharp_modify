@@ -10,7 +10,7 @@
 *
 *********************************************************************/
 
-namespace BACsharp.Example
+namespace BACsharp_modify.Example
 {
     partial class MainForm
     {

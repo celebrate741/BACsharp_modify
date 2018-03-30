@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace BACnet_modify
+namespace BACnet_modify.Dialog
 {
     public partial class frmInput : Form
     {

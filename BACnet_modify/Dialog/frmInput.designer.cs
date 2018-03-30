@@ -1,4 +1,4 @@
-﻿namespace BACnet_modify
+﻿namespace BACnet_modify.Dialog
 {
     partial class frmInput
     {

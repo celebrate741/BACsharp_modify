@@ -49,10 +49,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
-using BACsharp.Example.Ini;
-using BACsharp.Example.BACnet;
 
-namespace BACsharp.Example
+namespace BACsharp_modify.Example
 {
   public partial class MainForm : Form
   {

@@ -5,12 +5,15 @@ using System.Threading;
 using System.Windows.Forms;
 using System.IO;
 using BACsharp.BACnet_Def;
+using BACnet_modify.Dialog;
 
 namespace BACnet_modify
 {
     public partial class MainForm : Form
     {
         private SimpleReadWrite simpleRW = null;
+        private bool isMSTP = false;
+        private frm_MSTP frmMSTP = null;
         public MainForm()
         {
             InitializeComponent();
@@ -120,9 +123,11 @@ namespace BACnet_modify
             List<Property> properties = null;
             string addr = txtIP.Text;
             bool ret = false;
-            if (!checkBox1.Checked)
+            if (!isMSTP)
                 ret = simpleRW.SendReadProperty(addr, obj_type, obj_inst, prop_id, out properties);
-            /*else ret = simpleRW.SendReadProperty_TCP(addr,
+            else ret = simpleRW.SendReadProperty(addr, obj_type, obj_inst, prop_id, out properties,
+                frmMSTP.SourceLength, frmMSTP.Network, frmMSTP.MACAddr);
+            /*ret = simpleRW.SendReadProperty_TCP(addr,
                     0, 0, 0, -1, obj_type, obj_inst, prop_id, property);*/
             if (!ret) Log("Read Err(1)\n");
             else if (properties == null) Log("Read Err(2)\n");
@@ -176,7 +181,16 @@ namespace BACnet_modify
             else Log("Success\n");
         }
 
-        private void btn_broadcast_Click(object sender, EventArgs e)
+        private void chk_mstp_CheckedChanged(object sender, EventArgs e)
+        {
+            if (frmMSTP == null) frmMSTP = new frm_MSTP();
+            isMSTP = false;
+            if (chk_mstp.Checked)
+                if (frmMSTP.ShowDialog(this) == DialogResult.OK)
+                    isMSTP = true;
+        }
+
+        private void btn_edit_broadcast_Click(object sender, EventArgs e)
         {
             frmInput f = new frmInput();
             if (f.ShowDialog(this) == DialogResult.OK)
@@ -202,7 +216,7 @@ namespace BACnet_modify
             List<Device> devices = simpleRW.GetDevice(timeout, low_limit, high_limit);
             foreach (Device dev in devices)
                 Log(dev.Instance + ":" + "[" + dev.ServerEP.ToString() + "](" +
-                    "(" + dev.SourceLength + "," + dev.Network + "," + dev.MACAddress + ")\n");
+                    "(S:" + dev.SourceLength + ",N:" + dev.Network + ",M:" + dev.MACAddress + ")\n");
             devices = null;
         }
 

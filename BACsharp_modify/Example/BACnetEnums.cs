@@ -12,7 +12,7 @@
 
 using System;
 
-namespace BACsharp.Example.BACnet
+namespace BACsharp_modify.Example
 {
 
   public class BACnetEnums

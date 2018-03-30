@@ -234,21 +234,17 @@ namespace BACsharp.BACnet_Def
         /// read property(if source length==0  Network,MACAddress will not use)
         /// </summary>
         /// <param name="ipAddr"></param>
-        /// <param name="dev_SourceLength"></param>
-        /// <param name="dev_Network"></param>
-        /// <param name="dev_MACAddress"></param>
-        /// <param name="arrayidx"></param>
         /// <param name="objtype"></param>
         /// <param name="instance"></param>
         /// <param name="objprop"></param>
         /// <param name="property"></param>
         /// <returns></returns>
         public bool SendReadProperty(
-              string ipAddr,
-              BACnetEnums.BACNET_OBJECT_TYPE objtype,
-              uint instance,
-              BACnetEnums.BACNET_PROPERTY_ID objprop,
-              out List<Property> properties
+            string ipAddr,
+            BACnetEnums.BACNET_OBJECT_TYPE objtype, uint instance,
+            BACnetEnums.BACNET_PROPERTY_ID objprop,
+            out List<Property> properties,
+            UInt16 SourceLength = 0, UInt16 Network = 0, UInt16 MACAddress = 0
         )
         {
             properties = new List<Property>();
@@ -427,10 +423,6 @@ namespace BACsharp.BACnet_Def
         /// write property(if source length==0  Network,MACAddress will not use)
         /// </summary>
         /// <param name="ipAddr"></param>
-        /// <param name="dev_SourceLength"></param>
-        /// <param name="dev_Network"></param>
-        /// <param name="dev_MACAddress"></param>
-        /// <param name="arrayidx"></param>
         /// <param name="objtype"></param>
         /// <param name="instance"></param>
         /// <param name="objprop"></param>
@@ -438,12 +430,12 @@ namespace BACsharp.BACnet_Def
         /// <param name="priority"></param>
         /// <returns></returns>
         public bool SendWriteProperty(
-              string ipAddr,
-              BACnetEnums.BACNET_OBJECT_TYPE objtype,
-              uint instance,
-              BACnetEnums.BACNET_PROPERTY_ID objprop,
-              Property property,
-              int priority
+            string ipAddr,
+            BACnetEnums.BACNET_OBJECT_TYPE objtype, uint instance,
+            BACnetEnums.BACNET_PROPERTY_ID objprop,
+            Property property,
+            int priority,
+            UInt16 SourceLength = 0, UInt16 Network = 0, UInt16 MACAddress = 0
         )
         {
             Log("Write\n" + objtype.ToString() + " " + instance + "\n" + 
@@ -460,7 +452,8 @@ namespace BACsharp.BACnet_Def
             #region make BACnet packet
             List<byte> BaseBytes = BACnetBase.encode_BACnet_head(
                 BACnetEnums.BACNET_SERVICES_SUPPORTED.SERVICE_SUPPORTED_WRITE_PROPERTY
-                , ref InvokeCounter);
+                , ref InvokeCounter,
+                SourceLength, Network, MACAddress);
             sendBytes.AddRange(BaseBytes);
             // Service Request (var part of APDU):
             // Set up Object ID (Context Tag)
@@ -574,9 +567,10 @@ namespace BACsharp.BACnet_Def
             }
         }
 
-        
 
-        public bool SendDownloadDDC(string ipAddr, out byte[] file_data, uint instance = 1024)
+
+        public bool SendDownloadDDC(string ipAddr, out byte[] file_data,
+            UInt16 source_length = 0, UInt16 network = 0, UInt16 macAddr = 0, UInt16 instance = 1024)
         {
             file_data = null;
             Log("Download==============\n");
@@ -594,7 +588,7 @@ namespace BACsharp.BACnet_Def
             #region make Base BACnet packet
             List<byte> BaseBytes = BACnetBase.encode_BACnet_head(
                 BACnetEnums.BACNET_SERVICES_SUPPORTED.SERVICE_SUPPORTED_ATOMIC_READ_FILE
-                , ref InvokeCounter);
+                , ref InvokeCounter, source_length, network, macAddr);
             #endregion
 
             bool isEnd = false;

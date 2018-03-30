@@ -90,7 +90,8 @@ namespace BACsharp.BACnet_Def
         }
 
         public static List<byte> encode_BACnet_head(
-            BACnetEnums.BACNET_SERVICES_SUPPORTED service, ref int InvokeCounter)
+            BACnetEnums.BACNET_SERVICES_SUPPORTED service, ref int InvokeCounter,
+            UInt16 SourceLength = 0, UInt16 Network = 0, UInt16 MACAddress = 0)
         {
             List<byte> bytes = new List<byte>();
             // BVLL
@@ -101,8 +102,25 @@ namespace BACsharp.BACnet_Def
 
             // NPDU
             bytes.Add(BACnetEnums.BACNET_PROTOCOL_VERSION);
-            bytes.Add(0x04);  // Control flags, no destination address
-                                  //bytes[5] = 0x24;  // Control flags, with broadcast or destination address
+            if (SourceLength == 0)
+                bytes.Add(0x04);  // Control flags, no destination address
+            else bytes.Add(0x24);  // Control flags, with broadcast or destination address
+
+            if (SourceLength > 0)
+            {
+                // Get the (MSTP) Network number (2001)
+                byte[] temp = BitConverter.GetBytes(Network);
+                bytes.Add(temp[1]);
+                bytes.Add(temp[0]);
+
+                // Get the MAC address (0x0D)
+                //sendBytes[8] = 0x01;  // MAC address length
+                //sendBytes[9] = 0x0D;  // Destination MAC layer address
+                temp = BitConverter.GetBytes(MACAddress);
+                bytes.Add(0x01);  // MAC address length - adjust for other lengths ...
+                bytes.Add(temp[0]);
+                bytes.Add(0xFF);  // Hop count = 255
+            }
 
             // APDU
             bytes.Add(0x02);  // Control flags

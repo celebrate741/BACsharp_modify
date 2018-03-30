@@ -14,7 +14,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace BACsharp.Example.Ini
+namespace BACsharp_modify.Example
 {
   /// <summary>
   /// Create a New INI file to store or load data

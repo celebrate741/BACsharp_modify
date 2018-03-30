@@ -593,11 +593,11 @@ namespace BACsharp.BACnet_Def
 
             bool isEnd = false;
             int file_start = 0;
-            int seq_length = 1396;//BACSoft use 1396;
+            int seq_length = (source_length == 0) ? 1396 : 400;//BACSoft use 1396/400(MSTP);
             int log_count = 0, err_count = 0; ;
             Timer ReceiveTimer = new Timer();
             ReceiveTimer.Tick += new EventHandler(Timer_Tick);
-            ReceiveTimer.Interval = 500;
+            ReceiveTimer.Interval = 5000;
             UDPClient.EnableBroadcast = false;
             List<byte> file_data_list = new List<byte>();
             try{
@@ -626,7 +626,7 @@ namespace BACsharp.BACnet_Def
                         int seqNum = -1, windowSize = -1;
                         if (UDPClient.Available <= 0)
                         {
-                            log_count = (log_count + 1) % 100;
+                            log_count = (log_count + 1) % 1000;
                             if (log_count == 0) Log(".");
                         }
                         else
@@ -668,9 +668,9 @@ namespace BACsharp.BACnet_Def
                                     moreSeq = (ACK & 0x04) == 0x04;
                                     if (needSeqACK)
                                     {
-                                        Log("Need Seq ACK\n");
                                         seqNum = recvBytes[APDUOffset + 2];
                                         windowSize = recvBytes[APDUOffset + 3];
+                                        Log("Need Seq ACK \n");
                                         APDUOffset += 4;
                                     }
                                     else
@@ -700,6 +700,7 @@ namespace BACsharp.BACnet_Def
                                         Log("More Seq, Restart receive timer\n");
                                         ReceiveTimer.Stop();
                                         TimerDone = false;
+                                        getResponse = false;
                                         ReceiveTimer.Start();
                                     }
                                     else
@@ -716,7 +717,7 @@ namespace BACsharp.BACnet_Def
                     //receive end => error or decode
                     if (!getResponse)
                     {
-                        Log("Err no response\n"); ;
+                        Log("Err no response\n");
                         return false;  // This will still execute the finally
                     }
                     else
@@ -742,7 +743,8 @@ namespace BACsharp.BACnet_Def
                     Log("Err receive 10 times but not file end\n");
                     return false;
                 }
-            }catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 Log(ex.ToString() + "\n");
             }

@@ -101,7 +101,7 @@
             // 
             // btn_read
             // 
-            this.btn_read.Location = new System.Drawing.Point(17, 237);
+            this.btn_read.Location = new System.Drawing.Point(17, 242);
             this.btn_read.Name = "btn_read";
             this.btn_read.Size = new System.Drawing.Size(121, 48);
             this.btn_read.TabIndex = 5;
@@ -132,14 +132,14 @@
             // cmbObjectType
             // 
             this.cmbObjectType.FormattingEnabled = true;
-            this.cmbObjectType.Location = new System.Drawing.Point(15, 148);
+            this.cmbObjectType.Location = new System.Drawing.Point(15, 153);
             this.cmbObjectType.Name = "cmbObjectType";
             this.cmbObjectType.Size = new System.Drawing.Size(266, 23);
             this.cmbObjectType.TabIndex = 7;
             // 
             // numObjectInst
             // 
-            this.numObjectInst.Location = new System.Drawing.Point(48, 206);
+            this.numObjectInst.Location = new System.Drawing.Point(48, 211);
             this.numObjectInst.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -151,7 +151,7 @@
             // 
             // btn_write
             // 
-            this.btn_write.Location = new System.Drawing.Point(162, 237);
+            this.btn_write.Location = new System.Drawing.Point(162, 242);
             this.btn_write.Name = "btn_write";
             this.btn_write.Size = new System.Drawing.Size(121, 48);
             this.btn_write.TabIndex = 5;
@@ -303,7 +303,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(14, 208);
+            this.label8.Location = new System.Drawing.Point(14, 213);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(28, 15);
             this.label8.TabIndex = 9;
@@ -311,7 +311,7 @@
             // 
             // num_tag
             // 
-            this.num_tag.Location = new System.Drawing.Point(17, 316);
+            this.num_tag.Location = new System.Drawing.Point(256, 296);
             this.num_tag.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -329,7 +329,7 @@
             // cmbProperty
             // 
             this.cmbProperty.FormattingEnabled = true;
-            this.cmbProperty.Location = new System.Drawing.Point(15, 177);
+            this.cmbProperty.Location = new System.Drawing.Point(15, 182);
             this.cmbProperty.Name = "cmbProperty";
             this.cmbProperty.Size = new System.Drawing.Size(266, 23);
             this.cmbProperty.TabIndex = 7;
@@ -337,7 +337,7 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(17, 291);
+            this.checkBox1.Location = new System.Drawing.Point(15, 128);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(147, 19);
             this.checkBox1.TabIndex = 11;
@@ -346,7 +346,7 @@
             // 
             // btn_download
             // 
-            this.btn_download.Location = new System.Drawing.Point(353, 536);
+            this.btn_download.Location = new System.Drawing.Point(17, 296);
             this.btn_download.Name = "btn_download";
             this.btn_download.Size = new System.Drawing.Size(75, 23);
             this.btn_download.TabIndex = 12;
@@ -356,7 +356,7 @@
             // 
             // btn_upload
             // 
-            this.btn_upload.Location = new System.Drawing.Point(450, 536);
+            this.btn_upload.Location = new System.Drawing.Point(114, 296);
             this.btn_upload.Name = "btn_upload";
             this.btn_upload.Size = new System.Drawing.Size(75, 23);
             this.btn_upload.TabIndex = 13;
@@ -367,7 +367,7 @@
             // chk_mstp
             // 
             this.chk_mstp.AutoSize = true;
-            this.chk_mstp.Location = new System.Drawing.Point(185, 207);
+            this.chk_mstp.Location = new System.Drawing.Point(185, 212);
             this.chk_mstp.Name = "chk_mstp";
             this.chk_mstp.Size = new System.Drawing.Size(67, 19);
             this.chk_mstp.TabIndex = 14;

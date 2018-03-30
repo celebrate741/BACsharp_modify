@@ -58,11 +58,11 @@ namespace BACnet_modify
         {
             Log("MainForm start\n");
             //example set------------------------------
-            txtIP.Text = "192.168.88.212";
-            simpleRW.UDPPort_local = 0;
+            txtIP.Text = "192.168.88.214";
+            simpleRW.UDPPort_local = 47808;
             simpleRW.UDPPort_dest = 47808;
-            lb_port_local.Text = "0";
-            lb_port_dest.Text = "47808";
+            lb_port_local.Text = "" + simpleRW.UDPPort_local;
+            lb_port_dest.Text = "" + simpleRW.UDPPort_dest;
             foreach(BACnetEnums.BACNET_OBJECT_TYPE type in Enum.GetValues(typeof(BACnetEnums.BACNET_OBJECT_TYPE)))
                 cmbObjectType.Items.Add(type);
             foreach (BACnetEnums.BACNET_PROPERTY_ID id in Enum.GetValues(typeof(BACnetEnums.BACNET_PROPERTY_ID)))

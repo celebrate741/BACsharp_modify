@@ -1,0 +1,12 @@
+change local udp port to 0
+Initialize
+change dest udp port to 47808
+MainForm start
+Read
+OBJECT_DEVICE 2811
+PROP_OBJECT_IDENTIFIER==============
+(8) OBJECT_DEVICE 2811
+Not Seq
+No More Seq, Stop receive timer
+Value:
+OBJECT_DEVICE[2811]

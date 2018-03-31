@@ -1,28 +1,18 @@
-find device from 0 to 9000(2 sec)
-(0)(0)(0)(0)(0)(1)(2)(3)........................................(4)..................................................................................(5)..............................................................................................................................................................(5)............................................................................................................................................................................................................................................................................................................................................................................................................................................find device end
-2811:[192.168.88.212:47808]((S:0,N:0,M:0)
-329:[192.168.88.214:47808]((S:0,N:0,M:0)
-0:[192.168.88.76:47808]((S:0,N:0,M:0)
-2001:[192.168.88.214:47808]((S:1,N:300,M:1)
-2002:[192.168.88.214:47808]((S:1,N:302,M:2)
-Read
-OBJECT_BINARY_VALUE 0
-PROP_PRESENT_VALUE==============
-(5) OBJECT_BINARY_VALUE 0
-(warning)Invoke ID diff(read) 0/2
-(warning)Invoke ID diff(read) 8/2
-(warning)Invoke ID diff(read) 8/2
-(warning)Invoke ID diff(read) 8/2
-Not Seq
+change local udp port to 47808
+Initialize
+change dest udp port to 47808
+MainForm start
+Download==============
+.......................Not Seq
 No More Seq, Stop receive timer
-Value:
-0
-Read
-OBJECT_BINARY_VALUE 0
-PROP_PRESENT_VALUE==============
-(5) OBJECT_BINARY_VALUE 0
-(warning)Invoke ID diff(read) 8/3
-Not Seq
+
+Decode finish, File End:False
+..................................................Not Seq
 No More Seq, Stop receive timer
-Value:
-0
+
+Decode finish, File End:False
+...........................Not Seq
+No More Seq, Stop receive timer
+
+Decode finish, File End:True
+Read File Success :C:\Users\micky\Desktop\ehow\BACsoft\BACnet_modify\OUTPUT\DDC.bin 

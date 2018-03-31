@@ -585,12 +585,6 @@ namespace BACsharp.BACnet_Def
             List<byte> sendBytes = new List<byte>();
             Byte[] recvBytes = new Byte[2048];
 
-            #region make Base BACnet packet
-            List<byte> BaseBytes = BACnetBase.encode_BACnet_head(
-                BACnetEnums.BACNET_SERVICES_SUPPORTED.SERVICE_SUPPORTED_ATOMIC_READ_FILE
-                , ref InvokeCounter, source_length, network, macAddr);
-            #endregion
-
             bool isEnd = false;
             int file_start = 0;
             int seq_length = (source_length == 0) ? 1396 : 400;//BACSoft use 1396/400(MSTP);
@@ -604,6 +598,9 @@ namespace BACsharp.BACnet_Def
                 while (!isEnd && err_count < 10)
                 {
                     List<byte> seq_buffer = new List<byte>();
+                    List<byte> BaseBytes = BACnetBase.encode_BACnet_head(
+                        BACnetEnums.BACNET_SERVICES_SUPPORTED.SERVICE_SUPPORTED_ATOMIC_READ_FILE
+                        , ref InvokeCounter, source_length, network, macAddr);
                     //read file from file_start and one time length=seq_length
                     List<byte> encode = FileCoding.Read.EecodeAtomicReadFile(instance, file_start, seq_length);
                     sendBytes.Clear();
@@ -794,28 +791,24 @@ namespace BACsharp.BACnet_Def
             if (!SendWriteProperty(ipAddr,
                 BACnetEnums.BACNET_OBJECT_TYPE.OBJECT_PROGRAM, instance,
                 BACnetEnums.BACNET_PROPERTY_ID.PROP_PROGRAM_CHANGE,
-                property, -1))
+                property, -1,
+                source_length, network, macAddr))
             {
                 Log("(warning)write program-change fail(vendor-propriety value)\n");
                 return false;
             }
             #endregion
-            System.Threading.Thread.Sleep(500);
+            System.Threading.Thread.Sleep(1000);
 
             #region write file 1024
             bool WriteSucc = false;
             List<byte> sendBytes = new List<byte>();
             Byte[] recvBytes = new Byte[512];
-            Int16 seq_length = 1396;//BACSoft use 1396;
-
-            #region make BACnet Base packet
-            List<byte> BaseBytes = BACnetBase.encode_BACnet_head(
-                BACnetEnums.BACNET_SERVICES_SUPPORTED.SERVICE_SUPPORTED_ATOMIC_WRITE_FILE
-                , ref InvokeCounter);
-            #endregion
+            Int16 seq_length = (Int16)((source_length == 0) ? 1396 : 400);//BACSoft use 1396;
+            
             UDPClient.EnableBroadcast = false;
             Timer ReceiveTimer = new Timer();
-            ReceiveTimer.Interval = 500;
+            ReceiveTimer.Interval = 1000;
             ReceiveTimer.Tick += Timer_Tick;
             try
             {
@@ -823,12 +816,17 @@ namespace BACsharp.BACnet_Def
                 //Send
                 for (Int16 pos = 0; pos < file_data.Length; pos += seq_length)
                 {
+                    WriteSucc = false;
                     int len = (pos + seq_length < file_data.Length) ?
                         seq_length : (file_data.Length - pos);
                     Log("Encode start=" + pos + " length=" + len + "\n");
                     byte[] seq_data = new byte[len];
                     Array.Copy(file_data, pos, seq_data, 0, len);
-
+                    
+                    List<byte> BaseBytes = BACnetBase.encode_BACnet_head(
+                        BACnetEnums.BACNET_SERVICES_SUPPORTED.SERVICE_SUPPORTED_ATOMIC_WRITE_FILE
+                        , ref InvokeCounter,
+                        source_length, network, macAddr);
                     // Write File Encode (obj_indentify, start position, data length)
                     List<byte> encode = FileCoding.Write.EncodeAtomicWriteFile(instance, pos, seq_data);
                     sendBytes.Clear();
@@ -849,7 +847,7 @@ namespace BACsharp.BACnet_Def
                         Application.DoEvents();
                         if (UDPClient.Available <= 0)
                         {
-                            log_count = (log_count + 1) % 100;
+                            log_count = (log_count + 1) % 200;
                             if (log_count == 0) Log(".");
                         }
                         else
@@ -900,8 +898,8 @@ namespace BACsharp.BACnet_Def
                     }
                     if (!WriteSucc)
                     {
-                        Log("Err no response\n");
-                        break;
+                        Log("Error no response\n");
+                        return false;
                     }
                 }
             }catch(Exception ex)
@@ -916,7 +914,7 @@ namespace BACsharp.BACnet_Def
             }
             #endregion
 
-            System.Threading.Thread.Sleep(500);
+            System.Threading.Thread.Sleep(1000);
             if (WriteSucc)
             {
                 Log("Write File Success\n");
@@ -927,7 +925,8 @@ namespace BACsharp.BACnet_Def
                 if (!SendWriteProperty(ipAddr,
                     BACnetEnums.BACNET_OBJECT_TYPE.OBJECT_PROGRAM, instance,
                     BACnetEnums.BACNET_PROPERTY_ID.PROP_PROGRAM_CHANGE,
-                    property, -1))
+                    property, -1,
+                    source_length, network, macAddr))
                 {
                     Log("(warning)write program-change fail(load)\n");
                     return false;
@@ -935,23 +934,7 @@ namespace BACsharp.BACnet_Def
                 #endregion
                 return true;
             }
-            else
-            {
-                #region write program 1024 program-change = (0) ready
-                property = new Property();
-                property.Tag = BACnetEnums.BACNET_APPLICATION_TAG.BACNET_APPLICATION_TAG_ENUMERATED;
-                property.ValueEnum = 0;
-                if (!SendWriteProperty(ipAddr,
-                    BACnetEnums.BACNET_OBJECT_TYPE.OBJECT_PROGRAM, instance,
-                    BACnetEnums.BACNET_PROPERTY_ID.PROP_PROGRAM_CHANGE,
-                    property, 8))
-                {
-                    Log("(warning)write program-change fail(ready)\n");
-                    return false;
-                }
-                #endregion
-                return false;
-            }
+            else return false;
         }
 
 
